@@ -1,0 +1,30 @@
+{
+  "canisters": {
+    "ICP_smart_contract_weather_app_backend": {
+      "candid": "src/ICP_smart_contract_weather_app_backend/ICP_smart_contract_weather_app_backend.did",
+      "package": "ICP_smart_contract_weather_app_backend",
+      "type": "rust"
+    },
+    "ICP_smart_contract_weather_app_frontend": {
+      "dependencies": [
+        "ICP_smart_contract_weather_app_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/ICP_smart_contract_weather_app_frontend/src/index.html"
+      },
+      "source": [
+        "src/ICP_smart_contract_weather_app_frontend/assets",
+        "dist/ICP_smart_contract_weather_app_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

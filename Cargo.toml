@@ -1,0 +1,4 @@
+[workspace]
+members = [
+    "src/ICP_smart_contract_weather_app_backend",
+]
