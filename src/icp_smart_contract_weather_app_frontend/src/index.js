@@ -5,7 +5,7 @@ async function getWeatherData() {
     button.setAttribute("disabled", true);
 
     // Interact with Rust actor, calling the get_weather_data method
-    const data = await icp_smart_contract_weather_app_backend.get_weather_data();
+    const data = await icp_smart_contract_weather_app_backend.update_weather_data();
 
     button.removeAttribute("disabled");
 

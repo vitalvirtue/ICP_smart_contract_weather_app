@@ -1,0 +1,15 @@
+type WeatherData = record {
+    temperature: float64;
+    pressure: float64;
+    humidity: float64;
+    wind_speed: float64;
+};
+
+type State = record {
+    weather_data: opt WeatherData;
+};
+
+service : {
+    update_weather_data: (WeatherData) -> ();
+    get_weather_data: () -> (opt WeatherData);
+};

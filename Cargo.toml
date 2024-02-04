@@ -1,4 +1,5 @@
 [workspace]
 members = [
-    "src/ICP_smart_contract_weather_app_backend",
+    "src/icp_smart_contract_weather_app_backend",
 ]
+resolver = "1"

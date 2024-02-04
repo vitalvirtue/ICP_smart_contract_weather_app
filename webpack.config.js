@@ -7,7 +7,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
-const frontendDirectory = "ICP_smart_contract_weather_app_frontend";
+const frontendDirectory = "icp_smart_contract_weather_app_frontend";
 
 const frontend_entry = path.join("src", frontendDirectory, "src", "index.html");
 
@@ -66,15 +66,15 @@ module.exports = {
       Buffer: [require.resolve("buffer/"), "Buffer"],
       process: require.resolve("process/browser"),
     }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: `src/${frontendDirectory}/src/.ic-assets.json*`,
-          to: ".ic-assets.json5",
-          noErrorOnMissing: true,
-        },
-      ],
-    }),
+      new CopyPlugin({
+        patterns: [
+          {
+            from: `src/${frontendDirectory}/src/.ic-assets.json*`,
+            to: ".ic-assets.json5",
+            noErrorOnMissing: true,
+          },
+        ],
+      }),
   ],
   // proxy /api to port 4943 during development.
   // if you edit dfx.json to define a project-specific local network, change the port to match.
