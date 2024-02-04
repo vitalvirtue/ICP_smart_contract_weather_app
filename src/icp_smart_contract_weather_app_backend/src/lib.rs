@@ -1,9 +1,9 @@
 extern crate serde;
 use ic_cdk::api::management_canister::http_request::{http_request, CanisterHttpRequestArgument, HttpMethod};
-use serde_json::Value;
 use std::cell::RefCell;
 use ic_cdk_macros;
 use candid::{CandidType, Deserialize}; // Enables the availability of external libraries
+use serde_json::Value;
 
 #[derive(Clone, Debug, CandidType, Deserialize)]
 struct WeatherData {
@@ -25,8 +25,8 @@ thread_local! {
 }
 
 #[ic_cdk_macros::update]
-async fn update_weather_data() -> Result<(),  String> {
-    let api_endpoint = "http://api.openweathermap.org/data/2.5/weather?q=";
+async fn get_weather_data() -> Result<WeatherData, String> {
+    let api_endpoint = "https://api.openweathermap.org/data/2.5/weather?q=";
     let city = "Ankara";
     let country_code = "TR";
     let open_weather_map_api_key = "edb255292600fae328e811b1554ff324";
@@ -42,54 +42,17 @@ async fn update_weather_data() -> Result<(),  String> {
         headers: vec![],
     };
 
-    let response = match http_request(request, 1_603_079_600).await {
-        Ok((response,)) => { 
-            String::from_utf8(response.body).expect("Transformed response is not UTF-8 encoded.")
+    match http_request(request, 1_603_099_200).await {
+        Ok((response,)) => {
+            let v: Value = serde_json::from_slice(&response.body).map_err(|_| "Failed to parse weather data")?;
+            let weather = WeatherData {
+                temperature: v["main"]["temp"].as_f64().unwrap_or_default(),
+                pressure: v["main"]["pressure"].as_f64().unwrap_or_default(),
+                humidity: v["main"]["humidity"].as_f64().unwrap_or_default(),
+                wind_speed: v["wind"]["speed"].as_f64().unwrap_or_default(),
+            };
+            Ok(weather)
         }
-        Err((code, message)) => {
-            return Err(format!(
-                "The http_request resulted in an error. Code: {:?}, Message: {}",
-                code, message
-            ).into());
-        }
-    };
-
-    let weather_data: Value = match serde_json::from_str(&response) {
-        Ok(data) => data,
-        Err(e) => return Err(format!("Failed to parse weather data: {}", e)),
-    };
-    
-    let data = WeatherData {
-        temperature: (weather_data["main"]["temp"].as_f64().unwrap() * 100.0),
-        pressure: weather_data["main"]["pressure"].as_f64().unwrap(),
-        humidity: weather_data["main"]["humidity"].as_f64().unwrap(),
-        wind_speed: (weather_data["wind"]["speed"].as_f64().unwrap() * 100.0),
-    };
-
-    STATE.with(|state| {
-        *state.borrow_mut() = State {
-            weather_data: Some(data),
-        };
-    });
-
-    Ok(())
-}
-
-#[ic_cdk_macros::query]
-fn get_weather_data() -> Option<WeatherData> {
-    STATE.with(|state| state.borrow().weather_data.clone())
-}
-
-#[allow(dead_code)]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    update_weather_data().await?;
-
-    if let Some(data) = get_weather_data() {
-        println!("Temperature: {}", data.temperature as f64 / 100.0);
-        println!("Pressure: {}", data.pressure);
-        println!("Humidity: {}", data.humidity);
-        println!("Wind Speed: {}", data.wind_speed as f64 / 100.0);
+        Err((code, msg)) => Err(format!("Failed to make HTTP request: {} - {}", code as u16, msg)),
     }
-
-    Ok(())
 }
