@@ -82,22 +82,22 @@ If you are hosting frontend code somewhere without using DFX, you may need to ma
 
 ## Screenshots
 
-!Compiler Screenshot 
+1) Compiler Screenshot 
 
-screenshots/ss1.png
+![1](https://github.com/vitalvirtue/ICP_smart_contract_weather_app/screenshots/ss1.png)
 
-!Front End Screenshot 1
+2) Front End Screenshot 1
 
-screenshots/ss2.png
+![1](https://github.com/vitalvirtue/ICP_smart_contract_weather_app/screenshots/ss1.png)
 
-!Front End Screenshot 2
+3) Front End Screenshot 2
 
-screenshots/ss3.png
+![1](https://github.com/vitalvirtue/ICP_smart_contract_weather_app/screenshots/ss1.png)
 
-!Back End Screenshot 1
+4) Back End Screenshot 1
 
-screenshots/ss4.png
+![1](https://github.com/vitalvirtue/ICP_smart_contract_weather_app/screenshots/ss1.png)
 
-!Back End Screenshot 2
+5) Back End Screenshot 2
 
-screenshots/ss5.png
+![1](https://github.com/vitalvirtue/ICP_smart_contract_weather_app/screenshots/ss1.png)
